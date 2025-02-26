@@ -1,0 +1,34 @@
+2025-02-26T16:09:37.771-03:00  INFO 7004 --- [app_test] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-02-26T16:09:37.788-03:00  INFO 7004 --- [app_test] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-02-26T16:09:37.792-03:00  INFO 7004 --- [app_test] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-02-26T16:09:37.794-03:00  INFO 7004 --- [app_test] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-02-26T16:09:37.796-03:00  INFO 7004 --- [app_test] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-02-26T16:09:40.053-03:00  INFO 10708 --- [app_test] [main] com.erudio.app_test.AppTestApplication   : Starting AppTestApplication using Java 21.0.2 with PID 10708 (C:\Users\Marcos Andre\Desktop\SpringBoot\app_test\target\classes started by Marcos Andre in C:\Users\Marcos Andre\Desktop\SpringBoot\app_test)
+2025-02-26T16:09:40.057-03:00  INFO 10708 --- [app_test] [main] com.erudio.app_test.AppTestApplication   : The following 1 profile is active: "test"
+2025-02-26T16:09:40.937-03:00  INFO 10708 --- [app_test] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-02-26T16:09:40.981-03:00  INFO 10708 --- [app_test] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 22 ms. Found 0 JPA repository interfaces.
+2025-02-26T16:09:41.587-03:00  INFO 10708 --- [app_test] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-02-26T16:09:41.604-03:00  INFO 10708 --- [app_test] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-02-26T16:09:41.605-03:00  INFO 10708 --- [app_test] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.36]
+2025-02-26T16:09:41.650-03:00  INFO 10708 --- [app_test] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-02-26T16:09:41.650-03:00  INFO 10708 --- [app_test] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1531 ms
+2025-02-26T16:09:41.815-03:00  INFO 10708 --- [app_test] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-02-26T16:09:42.038-03:00  INFO 10708 --- [app_test] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:testdb user=SA
+2025-02-26T16:09:42.041-03:00  INFO 10708 --- [app_test] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-02-26T16:09:42.129-03:00  INFO 10708 --- [app_test] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-02-26T16:09:42.215-03:00  INFO 10708 --- [app_test] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.8.Final
+2025-02-26T16:09:42.271-03:00  INFO 10708 --- [app_test] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-02-26T16:09:42.610-03:00  INFO 10708 --- [app_test] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-02-26T16:09:42.702-03:00  INFO 10708 --- [app_test] [main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 2.3.232
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-02-26T16:09:42.939-03:00  INFO 10708 --- [app_test] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-02-26T16:09:42.942-03:00  INFO 10708 --- [app_test] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-02-26T16:09:43.477-03:00  INFO 10708 --- [app_test] [main] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2025-02-26T16:09:43.576-03:00  INFO 10708 --- [app_test] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-02-26T16:09:43.586-03:00  INFO 10708 --- [app_test] [main] com.erudio.app_test.AppTestApplication   : Started AppTestApplication in 4.094 seconds (process running for 4.486)
