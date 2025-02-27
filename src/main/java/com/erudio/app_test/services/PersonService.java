@@ -5,6 +5,7 @@ import com.erudio.app_test.repositories.PersonRepository;
 import com.erudio.app_test.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,26 +21,29 @@ public class PersonService {
     @Autowired
     private PersonRepository personRepository;
 
+    @Transactional
     public Person findById(Long id){
         logger.info("find one person!");
         return personRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado."));
     }
 
+    @Transactional
     public List<Person> findAll(){
         logger.info("Finding all people!");
         return personRepository.findAll();
     }
 
+    @Transactional
     public Person createPerson(Person person) {
         logger.info("Creating one person!");
         return personRepository.save(person);
     }
 
-    public Person updatePerson(Long id, Person personUpdate) {
+    @Transactional
+    public Person updatePerson(Person personUpdate) {
         logger.info("Updating one person!");
-        if(!personRepository.existsById(id)) throw new ResourceNotFoundException("Usuário não encontrado.");
-        Person person = personRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado."));
+        Person person = personRepository.findById(personUpdate.getId()).orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado."));
         person.setFirstName(personUpdate.getFirstName() == null? person.getFirstName() : personUpdate.getFirstName());
         person.setLastName(personUpdate.getLastName() == null? person.getLastName() : personUpdate.getLastName());
         person.setAddress(personUpdate.getAddress() == null? person.getAddress() : personUpdate.getAddress());
@@ -48,10 +52,11 @@ public class PersonService {
         return person;
     }
 
+    @Transactional
     public void deletePerson(Long id) {
         logger.info("Deleting one person!");
-        if(!personRepository.existsById(id)) throw new ResourceNotFoundException("Usuário não encontrado.");
-        personRepository.deleteById(id);
+        Person person = personRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado."));
+        personRepository.delete(person);
     }
 
     private Person mockPerson(int i) {
