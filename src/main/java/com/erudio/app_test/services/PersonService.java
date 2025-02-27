@@ -37,8 +37,16 @@ public class PersonService {
 
     public Person createPerson(Person person) {
         logger.info("Creating one person!");
-        person.setId(counter.incrementAndGet());
         return person;
+    }
+
+    public Person updatePerson(Person person) {
+        logger.info("Updating one person!");
+        return person;
+    }
+
+    public void deletePerson(String id) {
+        logger.info("Deleting one person!");
     }
 
     private Person mockPerson(int i) {
