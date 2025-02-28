@@ -31,7 +31,7 @@ class PersonRepositoryTest {
         assertTrue(savedPerson.getId() > 0, () -> "O Id não foi gerado.");
     }
 
-    @DisplayName("Given Person List when Find All then Return Person List")
+    @DisplayName("Given Person List when FindAll then Return Person List")
     @Test
     void testGivenPersonList_whenFindAll_thenReturnPersonList(){
         // Arrange
@@ -48,7 +48,7 @@ class PersonRepositoryTest {
         assertEquals(2, personList.size());
     }
 
-    @DisplayName("Given Person Object when Find By Id then Return Person Object")
+    @DisplayName("Given Person Object when FindById then Return Person Object")
     @Test
     void testGivenPersonObject_whenFindById_thenReturnPersonObject(){
         // Arrange
@@ -63,7 +63,7 @@ class PersonRepositoryTest {
         assertEquals(personFound.getId(), savedPerson.getId());
     }
 
-    @DisplayName("Given Person Object when Find By Email then Return Person Object")
+    @DisplayName("Given Person Object when FindByEmail then Return Person Object")
     @Test
     void testGivenPersonObject_whenFindByEmail_thenReturnPersonObject(){
         // Arrange
@@ -114,6 +114,22 @@ class PersonRepositoryTest {
 
         // Assert
         assertTrue(personOptional.isEmpty());
+    }
+
+    @DisplayName("Given FirstName And LastName when FindByJPQL then Return Person Object")
+    @Test
+    void testGivenFirstNameAndLastName_whenFindByJPQL_thenReturnPersonObject(){
+        // Arrange
+        Person person = new Person("Marcos", "André", "Coroado", "Male", "marcos@gmail.com");
+        Person savedPerson = personRepository.save(person);
+
+        // Act
+        Person personFound = personRepository.findByJPQL("Marcos", "André");
+
+        // Assert
+        assertNotNull(personFound, () -> "Objeto Pessoa não foi encontrado por id.");
+        assertEquals("Marcos", personFound.getFirstName(), () -> "FirstName não encontrado.");
+        assertEquals("André", personFound.getLastName(), () -> "LastName não encontrado.");
     }
 
 }
