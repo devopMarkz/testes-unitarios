@@ -7,15 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Logger;
 
 @Service
 public class PersonService {
 
-    private final AtomicLong counter = new AtomicLong();
     private Logger logger = Logger.getLogger(PersonService.class.getName());
 
     @Autowired
@@ -57,16 +54,6 @@ public class PersonService {
         logger.info("Deleting one person!");
         Person person = personRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado."));
         personRepository.delete(person);
-    }
-
-    private Person mockPerson(int i) {
-        Person person = new Person();
-        person.setId(counter.incrementAndGet());
-        person.setFirstName("Person name " + i);
-        person.setLastName("Last name " + i);
-        person.setAddress("Some address in Brasil " + i);
-        person.setGender("Masculino");
-        return person;
     }
 
 }

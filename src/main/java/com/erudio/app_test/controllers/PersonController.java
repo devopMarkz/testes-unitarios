@@ -29,7 +29,7 @@ public class PersonController {
         return personService.createPerson(person);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping
     public Person updatePerson(@RequestBody Person person){
         return personService.updatePerson(person);
     }
