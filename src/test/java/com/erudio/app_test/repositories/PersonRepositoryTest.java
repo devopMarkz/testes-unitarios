@@ -1,6 +1,7 @@
 package com.erudio.app_test.repositories;
 
 import com.erudio.app_test.entities.Person;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +18,17 @@ class PersonRepositoryTest {
     @Autowired
     private PersonRepository personRepository;
 
+    private Person person;
+
+    @BeforeEach
+    void setup(){
+        // Arrange
+        person = new Person("Marcos", "André", "Coroado", "Male", "marcos@gmail.com");
+    }
+
     @DisplayName("Given Person Object when Save then Return Saved Person")
     @Test
     void testGivenPersonObject_whenSave_thenReturnSavedPerson(){
-        // Arrange
-        Person person = new Person("Marcos", "André", "Coroado", "Male", "marcos@gmail.com");
-
         // Act
         Person savedPerson = personRepository.save(person);
 
@@ -35,9 +41,8 @@ class PersonRepositoryTest {
     @Test
     void testGivenPersonList_whenFindAll_thenReturnPersonList(){
         // Arrange
-        Person person1 = new Person("Marcos", "André", "Coroado", "Male", "marcos@gmail.com");
         Person person2 = new Person("Vitor", "Nascimento", "Maracanã", "Female", "vitor@gmail.com");
-        personRepository.save(person1);
+        personRepository.save(person);
         personRepository.save(person2);
 
         // Act
@@ -52,7 +57,6 @@ class PersonRepositoryTest {
     @Test
     void testGivenPersonObject_whenFindById_thenReturnPersonObject(){
         // Arrange
-        Person person = new Person("Marcos", "André", "Coroado", "Male", "marcos@gmail.com");
         Person savedPerson = personRepository.save(person);
 
         // Act
@@ -67,7 +71,6 @@ class PersonRepositoryTest {
     @Test
     void testGivenPersonObject_whenFindByEmail_thenReturnPersonObject(){
         // Arrange
-        Person person = new Person("Marcos", "André", "Coroado", "Male", "marcos@gmail.com");
         Person savedPerson = personRepository.save(person);
 
         // Act
@@ -82,7 +85,6 @@ class PersonRepositoryTest {
     @Test
     void testGivenPersonObject_whenUpdatePerson_thenReturnUpdatedPersonObject(){
         // Arrange
-        Person person = new Person("Marcos", "André", "Coroado", "Male", "marcos@gmail.com");
         Person savedPerson = personRepository.save(person);
 
         // Act
@@ -105,7 +107,6 @@ class PersonRepositoryTest {
     @Test
     void testGivenPersonObject_whenDelete_thenRemovePerson(){
         // Arrange
-        Person person = new Person("Marcos", "André", "Coroado", "Male", "marcos@gmail.com");
         personRepository.save(person);
 
         // Act
@@ -120,7 +121,6 @@ class PersonRepositoryTest {
     @Test
     void testGivenFirstNameAndLastName_whenFindByJPQL_thenReturnPersonObject(){
         // Arrange
-        Person person = new Person("Marcos", "André", "Coroado", "Male", "marcos@gmail.com");
         Person savedPerson = personRepository.save(person);
 
         // Act
@@ -136,7 +136,6 @@ class PersonRepositoryTest {
     @Test
     void testGivenFirstNameAndLastName_whenFindBySQL_thenReturnPersonObject(){
         // Arrange
-        Person person = new Person("Marcos", "André", "Coroado", "Male", "marcos@gmail.com");
         Person savedPerson = personRepository.save(person);
 
         // Act
