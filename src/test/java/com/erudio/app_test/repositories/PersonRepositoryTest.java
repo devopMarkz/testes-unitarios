@@ -132,4 +132,20 @@ class PersonRepositoryTest {
         assertEquals("André", personFound.getLastName(), () -> "LastName não encontrado.");
     }
 
+    @DisplayName("Given FirstName And LastName when FindBySQL then Return Person Object")
+    @Test
+    void testGivenFirstNameAndLastName_whenFindBySQL_thenReturnPersonObject(){
+        // Arrange
+        Person person = new Person("Marcos", "André", "Coroado", "Male", "marcos@gmail.com");
+        Person savedPerson = personRepository.save(person);
+
+        // Act
+        Person personFound = personRepository.findBySQL("Marcos", "André");
+
+        // Assert
+        assertNotNull(personFound, () -> "Objeto Pessoa não foi encontrado por id.");
+        assertEquals("Marcos", personFound.getFirstName(), () -> "FirstName não encontrado.");
+        assertEquals("André", personFound.getLastName(), () -> "LastName não encontrado.");
+    }
+
 }
