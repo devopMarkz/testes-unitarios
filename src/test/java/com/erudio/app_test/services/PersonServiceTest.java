@@ -111,4 +111,16 @@ public class PersonServiceTest {
         assertEquals("vitor@gmail.com", updatedPerson.getEmail());
     }
 
+    @DisplayName("Given Person Id when Delete Person then Do Nothing")
+    @Test
+    void testGivenPersonId_whenDeletePerson_thenDoNothing(){
+        person.setId(1L);
+        given(personRepository.findById(anyLong())).willReturn(Optional.of(person));
+        willDoNothing().given(personRepository).delete(person);
+
+        personService.deletePerson(1L);
+
+        verify(personRepository, times(1)).delete(person);
+    }
+
 }
