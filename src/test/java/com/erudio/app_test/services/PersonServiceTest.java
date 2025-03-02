@@ -11,6 +11,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.BDDMockito.*;
@@ -55,6 +57,29 @@ public class PersonServiceTest {
         });
 
         verify(personRepository, never()).save(any(Person.class));
+    }
+
+    @DisplayName("Given Persons List when FindAllPersons then Return Persons List")
+    @Test
+    void testGivenPersonsList_whenFindAllPersons_thenReturnPersonsList(){
+        Person otherPerson = new Person("Vitor", "Nascimento", "Maracanã", "Male", "vitor@gmail.com");
+        given(personRepository.findAll()).willReturn(List.of(person, otherPerson));
+
+        List<Person> personList = personService.findAll();
+
+        assertNotNull(personList);
+        assertEquals(2, personList.size());
+    }
+
+    @DisplayName("Given Empty Persons List when FindAllPersons then Return Empty Persons List")
+    @Test
+    void testGivenEmptyPersonsList_whenFindAllPersons_thenReturnEmptyPersonsList(){
+        given(personRepository.findAll()).willReturn(Collections.emptyList());
+
+        List<Person> personList = personService.findAll();
+
+        assertTrue(personList.isEmpty());
+        assertEquals(0, personList.size());
     }
 
 }
