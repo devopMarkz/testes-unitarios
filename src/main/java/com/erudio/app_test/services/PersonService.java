@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 @Service
@@ -34,6 +35,10 @@ public class PersonService {
     @Transactional
     public Person createPerson(Person person) {
         logger.info("Creating one person!");
+        Optional<Person> savedPerson = personRepository.findByEmail(person.getEmail());
+        if(savedPerson.isPresent()){
+            throw new ResourceNotFoundException("Person already exist with given e-mail: " + person.getEmail());
+        }
         return personRepository.save(person);
     }
 
