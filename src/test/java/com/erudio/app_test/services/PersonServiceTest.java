@@ -5,6 +5,7 @@ import com.erudio.app_test.repositories.PersonRepository;
 import com.erudio.app_test.services.exceptions.ResourceNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -35,92 +36,119 @@ public class PersonServiceTest {
         person = new Person("Marcos", "André", "Coroado", "Male", "marcos@gmail.com");
     }
 
-    @DisplayName("Given Person Object when Save Person then Return Person Object")
-    @Test
-    void testGivenPersonObject_whenSavePerson_thenReturnPersonObject(){
-        given(personRepository.findByEmail(anyString())).willReturn(Optional.empty());
-        given(personRepository.save(person)).willReturn(person);
+    @Nested
+    class CreatePersonTest{
 
-        Person savedPerson = personService.createPerson(person);
+        @DisplayName("Given Person Object when Save Person then Return Person Object")
+        @Test
+        void testGivenPersonObject_whenSavePerson_thenReturnPersonObject(){
+            given(personRepository.findByEmail(anyString())).willReturn(Optional.empty());
+            given(personRepository.save(person)).willReturn(person);
 
-        assertNotNull(savedPerson);
-        assertEquals("Marcos", person.getFirstName());
+            Person savedPerson = personService.createPerson(person);
+
+            assertNotNull(savedPerson);
+            assertEquals("Marcos", person.getFirstName());
+        }
+
+        @DisplayName("Given Person Object when Save Repeated Person then Throw Exception")
+        @Test
+        void testGivenPersonObject_whenSaveRepeatedPerson_thenThrowException(){
+            given(personRepository.findByEmail(anyString())).willReturn(Optional.of(person));
+
+            assertThrows(ResourceNotFoundException.class, () -> {
+                personService.createPerson(person);
+            });
+
+            verify(personRepository, never()).save(any(Person.class));
+        }
+
     }
 
-    @DisplayName("Given Person Object when Save Repeated Person then Throw Exception")
-    @Test
-    void testGivenPersonObject_whenSaveRepeatedPerson_thenThrowException(){
-        given(personRepository.findByEmail(anyString())).willReturn(Optional.of(person));
+    @Nested
+    class FindAllTests{
 
-        assertThrows(ResourceNotFoundException.class, () -> {
-            personService.createPerson(person);
-        });
+        @DisplayName("Given Persons List when FindAllPersons then Return Persons List")
+        @Test
+        void testGivenPersonsList_whenFindAllPersons_thenReturnPersonsList(){
+            Person otherPerson = new Person("Vitor", "Nascimento", "Maracanã", "Male", "vitor@gmail.com");
+            given(personRepository.findAll()).willReturn(List.of(person, otherPerson));
 
-        verify(personRepository, never()).save(any(Person.class));
+            List<Person> personList = personService.findAll();
+
+            assertNotNull(personList);
+            assertEquals(2, personList.size());
+        }
+
+        @DisplayName("Given Empty Persons List when FindAllPersons then Return Empty Persons List")
+        @Test
+        void testGivenEmptyPersonsList_whenFindAllPersons_thenReturnEmptyPersonsList(){
+            given(personRepository.findAll()).willReturn(Collections.emptyList());
+
+            List<Person> personList = personService.findAll();
+
+            assertTrue(personList.isEmpty());
+            assertEquals(0, personList.size());
+        }
+
     }
 
-    @DisplayName("Given Persons List when FindAllPersons then Return Persons List")
-    @Test
-    void testGivenPersonsList_whenFindAllPersons_thenReturnPersonsList(){
-        Person otherPerson = new Person("Vitor", "Nascimento", "Maracanã", "Male", "vitor@gmail.com");
-        given(personRepository.findAll()).willReturn(List.of(person, otherPerson));
+    @Nested
+    class FindByIdTests{
 
-        List<Person> personList = personService.findAll();
+        @DisplayName("Given Person Id when Find By Id then Return Person Object")
+        @Test
+        void testGivenPersonId_whenFindById_thenReturnPersonObject(){
+            given(personRepository.findById(anyLong())).willReturn(Optional.of(person));
 
-        assertNotNull(personList);
-        assertEquals(2, personList.size());
+            Person foundedPerson = personService.findById(1L);
+
+            assertNotNull(foundedPerson);
+            assertEquals("Marcos", foundedPerson.getFirstName());
+        }
+
     }
 
-    @DisplayName("Given Empty Persons List when FindAllPersons then Return Empty Persons List")
-    @Test
-    void testGivenEmptyPersonsList_whenFindAllPersons_thenReturnEmptyPersonsList(){
-        given(personRepository.findAll()).willReturn(Collections.emptyList());
+    @Nested
+    class UpdatePersonTests{
 
-        List<Person> personList = personService.findAll();
+        @DisplayName("Given Person Object when Update Person then Return Updated Person Object")
+        @Test
+        void testGivenPersonObject_whenUpdatePerson_thenReturnUpdatedPersonObject(){
+            person.setId(1L);
+            given(personRepository.findById(anyLong())).willReturn(Optional.of(person));
 
-        assertTrue(personList.isEmpty());
-        assertEquals(0, personList.size());
+            person.setEmail("vitor@gmail.com");
+            person.setFirstName("Vitor");
+
+            given(personRepository.save(person)).willReturn(person);
+
+            Person updatedPerson = personService.updatePerson(person);
+
+            assertNotNull(updatedPerson);
+            assertEquals("Vitor", updatedPerson.getFirstName());
+            assertEquals("vitor@gmail.com", updatedPerson.getEmail());
+            verify(personRepository, times(1)).findById(anyLong());
+            verify(personRepository, times(1)).save(any(Person.class));
+        }
+
     }
 
-    @DisplayName("Given Person Id when Find By Id then Return Person Object")
-    @Test
-    void testGivenPersonId_whenFindById_thenReturnPersonObject(){
-        given(personRepository.findById(anyLong())).willReturn(Optional.of(person));
+    @Nested
+    class DeletePersonTests{
 
-        Person foundedPerson = personService.findById(1L);
+        @DisplayName("Given Person Id when Delete Person then Do Nothing")
+        @Test
+        void testGivenPersonId_whenDeletePerson_thenDoNothing(){
+            person.setId(1L);
+            given(personRepository.findById(anyLong())).willReturn(Optional.of(person));
+            willDoNothing().given(personRepository).delete(person);
 
-        assertNotNull(foundedPerson);
-        assertEquals("Marcos", foundedPerson.getFirstName());
-    }
+            personService.deletePerson(1L);
 
-    @DisplayName("Given Person Object when Update Person then Return Updated Person Object")
-    @Test
-    void testGivenPersonObject_whenUpdatePerson_thenReturnUpdatedPersonObject(){
-        person.setId(1L);
-        given(personRepository.findById(anyLong())).willReturn(Optional.of(person));
+            verify(personRepository, times(1)).delete(person);
+        }
 
-        person.setEmail("vitor@gmail.com");
-        person.setFirstName("Vitor");
-
-        given(personRepository.save(person)).willReturn(person);
-
-        Person updatedPerson = personService.updatePerson(person);
-
-        assertNotNull(updatedPerson);
-        assertEquals("Vitor", updatedPerson.getFirstName());
-        assertEquals("vitor@gmail.com", updatedPerson.getEmail());
-    }
-
-    @DisplayName("Given Person Id when Delete Person then Do Nothing")
-    @Test
-    void testGivenPersonId_whenDeletePerson_thenDoNothing(){
-        person.setId(1L);
-        given(personRepository.findById(anyLong())).willReturn(Optional.of(person));
-        willDoNothing().given(personRepository).delete(person);
-
-        personService.deletePerson(1L);
-
-        verify(personRepository, times(1)).delete(person);
     }
 
 }
