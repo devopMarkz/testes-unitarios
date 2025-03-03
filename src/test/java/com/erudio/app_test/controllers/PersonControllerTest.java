@@ -2,6 +2,7 @@ package com.erudio.app_test.controllers;
 
 import com.erudio.app_test.entities.Person;
 import com.erudio.app_test.services.PersonService;
+import com.erudio.app_test.services.exceptions.ResourceNotFoundException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -105,5 +106,21 @@ public class PersonControllerTest {
                 .andExpect(jsonPath("$.lastName", is(person.getLastName())))
                 .andExpect(jsonPath("$.email", is(person.getEmail())))
                 .andExpect(jsonPath("$.address").value(person.getAddress()));;
+    }
+
+    @Test
+    @DisplayName("Given Invalid Person Id when FindById then Return Not Found")
+    void testGivenInvalidPersonId_whenFindById_thenReturnNotFound() throws JsonProcessingException, Exception {
+        // Given / Arrange
+        long personId = 1L;
+        given(service.findById(personId)).willThrow(ResourceNotFoundException.class);
+
+        // When / Act
+        ResultActions response = mockMvc.perform(get("/person/{id}", personId));
+
+        // Then / Assert
+        response.
+                andExpect(status().isNotFound())
+                .andDo(print());
     }
 }
