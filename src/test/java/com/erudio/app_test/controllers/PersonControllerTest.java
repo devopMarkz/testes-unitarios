@@ -14,6 +14,8 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.util.List;
+
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.*;
 
@@ -70,4 +72,19 @@ public class PersonControllerTest {
                 .andExpect(jsonPath("$.address").value(person.getAddress()));
     }
 
+    @Test
+    @DisplayName("Given List Of Persons when FindAll Persons then Return Persons List")
+    void testGivenListOfPersons_whenFindAllPersons_thenReturnPersonsList() throws Exception {
+
+        // Arrange
+        Person otherPerson = new Person("Marcos", "André", "marcos@gmail.com", "São Luís - Maranhão - Brasil", "Male");
+        List<Person> personList = List.of(person, otherPerson);
+        given(service.findAll()).willReturn(personList);
+
+        // Simula a requisição
+        ResultActions response = mockMvc.perform(get("/person"));
+
+        response.andExpect(status().isOk())
+                .andExpect(jsonPath("$.size()", is(personList.size())));
+    }
 }
