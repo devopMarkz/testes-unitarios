@@ -123,4 +123,26 @@ public class PersonControllerTest {
                 andExpect(status().isNotFound())
                 .andDo(print());
     }
+
+    @Test
+    @DisplayName("Given Updated Person When Update Person then Return Updated Person")
+    void testGivenUpdatedPerson_WhenUpdatePerson_thenReturnUpdatedPerson() throws JsonProcessingException, Exception {
+
+        // Given / Arrange
+        long personId = 1L;
+        given(service.findById(personId)).willReturn(person);
+        given(service.updatePerson(any(Person.class))).willAnswer(invocationOnMock -> invocationOnMock.getArgument(0));
+
+        // When / Act
+        ResultActions response = mockMvc.perform(put("/person")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(
+                        new Person("Vitor", "Nascimento", "Maracanã", "Male", "vitor@gmail.com")
+                ))
+        );
+
+        // Then / Assert
+        response.andExpect(status().isOk())
+                .andExpect(jsonPath("$.firstName", is("Vitor")));
+    }
 }
