@@ -145,4 +145,20 @@ public class PersonControllerTest {
         response.andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstName", is("Vitor")));
     }
+
+    @Test
+    @DisplayName("Given Person Id When DeletePerson then Return No Content")
+    void testGivenPersonId_WhenDeletePerson_thenReturnNoContent() throws JsonProcessingException, Exception {
+
+        // Given / Arrange
+        long personId = 1L;
+        willDoNothing().given(service).deletePerson(personId);
+
+        // When / Act
+        ResultActions response = mockMvc.perform(delete("/person/{id}", personId));
+
+        // Then / Assert
+        response.andExpect(status().isNoContent());
+    }
+
 }
